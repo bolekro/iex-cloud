@@ -29,7 +29,7 @@
     "version": "run-s doc:html doc:publish",
     "prepare-release": "run-s doc:html standard-version doc:publish",
     "release": "np",
-    "postinstall": "npm run build"
+    "postinstall": "npm run-script build"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

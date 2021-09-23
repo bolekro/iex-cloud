@@ -46,6 +46,7 @@
     "@types/jasmine": "^3.5.10",
     "@types/jest": "^26.0.0",
     "@types/nock": "^11.1.0",
+    "@types/node": "^16.9.6",
     "@types/node-fetch": "^2.5.7",
     "@types/setup-polly-jest": "^0.5.0",
     "coveralls": "^3.1.0",

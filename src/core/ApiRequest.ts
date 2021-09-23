@@ -11,17 +11,33 @@ export interface RequestConfig {
 }
 
 export interface IexUsageConfig {
-  readonly apiToken?: string;
-  readonly secretToken?: string;
-  readonly version?: string;
-  readonly apiEnv?: string;
+  apiToken?: string;
+  secretToken?: string;
+  version?: string;
+  apiEnv?: string;
+}
+
+let configSet = false;
+
+const iexConf: IexUsageConfig = {
+  apiToken: process.env.IEX_API_TOKEN || process.env.REACT_APP_IEX_API_TOKEN,
+  secretToken: process.env.IEX_API_SECRET_TOKEN || process.env.REACT_APP_IEX_API_SECRET_TOKEN,
+  version: process.env.IEX_API_VERSION || process.env.REACT_APP_IEX_API_VERSION || 'v1',
+  apiEnv: process.env.IEX_API_ENV || process.env.REACT_APP_IEX_API_ENV || 'cloud'
+}
+
+export const Configure = (config: IexUsageConfig) => {
+  iexConf.apiToken = config.apiToken || iexConf.apiToken;
+  iexConf.secretToken = config.secretToken || iexConf.secretToken;
+  iexConf.version = config.version || iexConf.version;
+  iexConf.apiEnv = config.apiEnv || iexConf.apiEnv;
+  configSet = true;
 }
 
 /** TODO: refactor */
 export const ApiRequest = async (
   endpoint: string,
   options?: Partial<RequestConfig>,
-  iexConfig: IexUsageConfig = {},
 ): Promise<any> => {
   const { useSecret, method, data, params } = {
     data: {},
@@ -29,16 +45,16 @@ export const ApiRequest = async (
     useSecret: false,
     ...options,
   };
-  const apiToken = process.env.IEX_API_TOKEN || process.env.REACT_APP_IEX_API_TOKEN || iexConfig.apiToken;
 
-  // tslint:disable-next-line: no-if-statement
-  if (!apiToken) {
-    throw new Error('IEX_API_TOKEN not found');
+  const apiToken = iexConf.apiToken;
+
+  if (!configSet) {
+    throw new Error('Config not set');
   }
 
-  const secretToken = process.env.IEX_API_SECRET_TOKEN || process.env.REACT_APP_IEX_API_SECRET_TOKEN || iexConfig.secretToken;
-  const version = process.env.IEX_API_VERSION || process.env.REACT_APP_IEX_API_VERSION || iexConfig.version || 'v1';
-  const apiEnv = process.env.IEX_API_ENV || process.env.REACT_APP_IEX_API_ENV || iexConfig.apiEnv || 'cloud';
+  const secretToken = iexConf.secretToken;
+  const version =  iexConf.version;
+  const apiEnv = iexConf.apiEnv;
 
   const baseUrl = `https://${apiEnv}.iexapis.com/${version}/`;
   const url =
@@ -57,9 +73,9 @@ export const ApiRequest = async (
       method === 'GET'
         ? await fetch(urlWithParams)
         : await fetch(urlWithParams, {
-            body: useSecret ? { ...data, token: secretToken } : data,
-            method,
-          });
+          body: useSecret ? { ...data, token: secretToken } : data,
+          method,
+        });
     const json = await response.json();
     return json;
   } catch (error) {

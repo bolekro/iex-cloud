@@ -11,6 +11,6 @@ export interface IexUsageConfig {
     version?: string;
     apiEnv?: string;
 }
-export declare const Configure: (config: IexUsageConfig) => void;
+export declare const configure: (config: IexUsageConfig) => void;
 /** TODO: refactor */
 export declare const ApiRequest: (endpoint: string, options?: Partial<RequestConfig>) => Promise<any>;

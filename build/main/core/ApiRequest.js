@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiRequest = exports.Configure = void 0;
+exports.ApiRequest = exports.configure = void 0;
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const utils_1 = require("../utils");
 let configSet = false;
@@ -13,7 +13,7 @@ const iexConf = {
     version: process.env.IEX_API_VERSION || process.env.REACT_APP_IEX_API_VERSION || 'v1',
     apiEnv: process.env.IEX_API_ENV || process.env.REACT_APP_IEX_API_ENV || 'cloud'
 };
-exports.Configure = (config) => {
+exports.configure = (config) => {
     iexConf.apiToken = config.apiToken || iexConf.apiToken;
     iexConf.secretToken = config.secretToken || iexConf.secretToken;
     iexConf.version = config.version || iexConf.version;
@@ -25,7 +25,7 @@ exports.ApiRequest = async (endpoint, options) => {
     const { useSecret, method, data, params } = Object.assign({ data: {}, method: 'GET', useSecret: false }, options);
     const apiToken = iexConf.apiToken;
     if (!configSet) {
-        throw new Error('Config not set. Pleasue run Configure(config) first');
+        throw new Error('Config not set. Pleasue run configure(config) first');
     }
     const secretToken = iexConf.secretToken;
     const version = iexConf.version;

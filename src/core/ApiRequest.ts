@@ -26,7 +26,7 @@ const iexConf: IexUsageConfig = {
   apiEnv: process.env.IEX_API_ENV || process.env.REACT_APP_IEX_API_ENV || 'cloud'
 }
 
-export const Configure = (config: IexUsageConfig) => {
+export const configure = (config: IexUsageConfig) => {
   iexConf.apiToken = config.apiToken || iexConf.apiToken;
   iexConf.secretToken = config.secretToken || iexConf.secretToken;
   iexConf.version = config.version || iexConf.version;
@@ -49,7 +49,7 @@ export const ApiRequest = async (
   const apiToken = iexConf.apiToken;
 
   if (!configSet) {
-    throw new Error('Config not set. Pleasue run Configure(config) first');
+    throw new Error('Config not set. Pleasue run configure(config) first');
   }
 
   const secretToken = iexConf.secretToken;

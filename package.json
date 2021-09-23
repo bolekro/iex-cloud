@@ -28,7 +28,8 @@
     "recordings:clean": "rm -rf ./__recordings__",
     "version": "run-s doc:html doc:publish",
     "prepare-release": "run-s doc:html standard-version doc:publish",
-    "release": "np"
+    "release": "np",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

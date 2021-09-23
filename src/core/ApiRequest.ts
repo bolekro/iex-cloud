@@ -49,7 +49,7 @@ export const ApiRequest = async (
   const apiToken = iexConf.apiToken;
 
   if (!configSet) {
-    throw new Error('Config not set');
+    throw new Error('Config not set. Pleasue run Configure(config) first');
   }
 
   const secretToken = iexConf.secretToken;
